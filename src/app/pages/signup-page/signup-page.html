@@ -1,0 +1,116 @@
+<div class="flex h-full items-center">
+    <div class="w-[45%] h-full">
+        <img class="object-cover h-full" src="https://images.unsplash.com/photo-1557660559-42497f78035b?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=1246" alt="volunteer">
+    </div>
+    
+    <div class="w-[55%] flex justify-center items-center">
+        <form [formGroup]="signupForm" (ngSubmit)="onSubmit()" class="w-72 flex flex-col gap-4">
+            <h3 class="text-white text-3xl mb-4 text-center font-semibold">Sign Up</h3>
+            
+            <!-- Name -->
+            <div>
+                <div class="bg-neutral-900 py-2 px-4 rounded-md flex gap-2" 
+                     [class.border-2]="f['name'].invalid && f['name'].touched"
+                     [class.border-red-500]="f['name'].invalid && f['name'].touched">
+                    <input 
+                        formControlName="name"
+                        class="placeholder-neutral-400 outline-none text-white bg-transparent w-full" 
+                        type="text" 
+                        placeholder="Name">
+                </div>
+                <span *ngIf="f['name'].invalid && f['name'].touched" class="text-red-500 text-xs mt-1">
+                    <span *ngIf="f['name'].errors?.['required']">Name is required</span>
+                    <span *ngIf="f['name'].errors?.['minlength']">Name must be at least 2 characters</span>
+                </span>
+            </div>
+
+            <!-- Surname -->
+            <div>
+                <div class="bg-neutral-900 py-2 px-4 rounded-md"
+                     [class.border-2]="f['surname'].invalid && f['surname'].touched"
+                     [class.border-red-500]="f['surname'].invalid && f['surname'].touched">
+                    <input 
+                        formControlName="surname"
+                        class="placeholder-neutral-400 outline-none text-white bg-transparent w-full" 
+                        type="text" 
+                        placeholder="Surname">
+                </div>
+                <span *ngIf="f['surname'].invalid && f['surname'].touched" class="text-red-500 text-xs mt-1">
+                    <span *ngIf="f['surname'].errors?.['required']">Surname is required</span>
+                    <span *ngIf="f['surname'].errors?.['minlength']">Surname must be at least 2 characters</span>
+                </span>
+            </div>
+
+            <!-- Email -->
+            <div>
+                <div class="bg-neutral-900 py-2 px-4 rounded-md"
+                     [class.border-2]="f['email'].invalid && f['email'].touched"
+                     [class.border-red-500]="f['email'].invalid && f['email'].touched">
+                    <input 
+                        formControlName="email"
+                        class="placeholder-neutral-400 outline-none text-white bg-transparent w-full" 
+                        type="email" 
+                        placeholder="Email">
+                </div>
+                <span *ngIf="f['email'].invalid && f['email'].touched" class="text-red-500 text-xs mt-1">
+                    <span *ngIf="f['email'].errors?.['required']">Email is required</span>
+                    <span *ngIf="f['email'].errors?.['email']">Invalid email format</span>
+                </span>
+            </div>
+
+            <!-- Password -->
+            <div>
+                <div class="bg-neutral-900 py-2 px-4 rounded-md flex items-center"
+                     [class.border-2]="f['password'].invalid && f['password'].touched"
+                     [class.border-red-500]="f['password'].invalid && f['password'].touched">
+                    <input 
+                        formControlName="password"
+                        class="placeholder-neutral-400 outline-none text-white bg-transparent flex-1" 
+                        [type]="showPassword ? 'text' : 'password'" 
+                        placeholder="Password">
+                    <button 
+                        type="button"
+                        (click)="togglePasswordVisibility()"
+                        class="text-neutral-400 hover:text-white ml-2">
+                        {{ showPassword ? '👁️' : '👁️‍🗨️' }}
+                    </button>
+                </div>
+                <span *ngIf="f['password'].invalid && f['password'].touched" class="text-red-500 text-xs mt-1">
+                    <span *ngIf="f['password'].errors?.['required']">Password is required</span>
+                    <span *ngIf="f['password'].errors?.['minlength']">Password must be at least 6 characters</span>
+                </span>
+            </div>
+
+            <!-- Type (Select) -->
+            <div>
+                <div class="bg-neutral-900 py-2 px-4 rounded-md"
+                     [class.border-2]="f['type'].invalid && f['type'].touched"
+                     [class.border-red-500]="f['type'].invalid && f['type'].touched">
+                    <select 
+                        formControlName="type"
+                        class="placeholder-neutral-400 outline-none text-white bg-transparent w-full cursor-pointer">
+                        <option value="" disabled selected>Select Type</option>
+                        <option value="volunteer">Volunteer</option>
+                        <option value="organization">Organization</option>
+                        <option value="donor">Donor</option>
+                    </select>
+                </div>
+                <span *ngIf="f['type'].invalid && f['type'].touched" class="text-red-500 text-xs mt-1">
+                    Type is required
+                </span>
+            </div>
+
+            <button 
+                type="submit"
+                [disabled]="isSubmitting"
+                class="mt-3 bg-blue-500 hover:bg-blue-500/80 cursor-pointer w-full rounded-md text-white font-bold px-4 py-2 disabled:opacity-50 disabled:cursor-not-allowed">
+                {{ isSubmitting ? 'Registering...' : 'Register' }}
+            </button>
+
+            <p class="text-center text-neutral-400 text-sm">
+                Already have an account? 
+                <a routerLink="/login" class="text-blue-500 hover:underline">Login</a>
+            </p>
+        </form>
+    </div>
+</div>
