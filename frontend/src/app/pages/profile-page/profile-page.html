@@ -1,0 +1,185 @@
+<div class="min-h-screen bg-neutral-950 text-white p-8">
+  <div class="max-w-2xl mx-auto">
+    <div class="mb-6 flex items-center justify-between">
+      <h1 class="text-3xl font-bold">Completar Perfil</h1>
+      <button 
+        (click)="router.navigate(['/'])"
+        class="text-blue-400 hover:text-blue-300">
+        ← Volver
+      </button>
+    </div>
+
+    <div class="bg-neutral-900 rounded-lg p-6">
+      <form [formGroup]="profileForm" (ngSubmit)="onSubmit()" class="space-y-4">
+        <!-- Avatar Upload -->
+        <div>
+          <label class="block mb-2 text-sm font-medium">Avatar (opcional)</label>
+          <div class="flex items-center gap-4">
+            <div *ngIf="avatarPreview" class="w-24 h-24 rounded-full overflow-hidden border-2 border-neutral-700">
+              <img [src]="avatarPreview" alt="Avatar preview" class="w-full h-full object-cover">
+            </div>
+            <div *ngIf="!avatarPreview && authService.currentUserValue?.avatar_url" class="w-24 h-24 rounded-full overflow-hidden border-2 border-neutral-700">
+              <img [src]="'http://localhost:8000' + authService.currentUserValue?.avatar_url" alt="Avatar actual" class="w-full h-full object-cover">
+            </div>
+            <div class="flex-1">
+              <input 
+                type="file"
+                accept="image/*"
+                (change)="onAvatarSelected($event)"
+                class="w-full bg-neutral-800 py-2 px-4 rounded-md text-white outline-none border border-neutral-700 text-sm file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-blue-500 file:text-white hover:file:bg-blue-600">
+              <p class="text-xs text-neutral-400 mt-1">Formatos: JPG, PNG, GIF. Máximo 5MB</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Postulante Form -->
+        <ng-container *ngIf="authService.isPostulante()">
+          <div>
+            <label class="block mb-2 text-sm font-medium">Nombres *</label>
+            <input 
+              formControlName="nombres"
+              class="w-full bg-neutral-800 py-2 px-4 rounded-md text-white outline-none border border-neutral-700"
+              [class.border-red-500]="f['nombres'].invalid && f['nombres'].touched"
+              type="text">
+            <span *ngIf="f['nombres'].invalid && f['nombres'].touched" class="text-red-500 text-xs mt-1">
+              Los nombres son requeridos
+            </span>
+          </div>
+
+          <div>
+            <label class="block mb-2 text-sm font-medium">Apellidos *</label>
+            <input 
+              formControlName="apellidos"
+              class="w-full bg-neutral-800 py-2 px-4 rounded-md text-white outline-none border border-neutral-700"
+              [class.border-red-500]="f['apellidos'].invalid && f['apellidos'].touched"
+              type="text">
+            <span *ngIf="f['apellidos'].invalid && f['apellidos'].touched" class="text-red-500 text-xs mt-1">
+              Los apellidos son requeridos
+            </span>
+          </div>
+
+          <div>
+            <label class="block mb-2 text-sm font-medium">Fecha de Nacimiento</label>
+            <input 
+              formControlName="fecha_nacimiento"
+              class="w-full bg-neutral-800 py-2 px-4 rounded-md text-white outline-none border border-neutral-700"
+              type="date">
+          </div>
+
+          <div>
+            <label class="block mb-2 text-sm font-medium">Teléfono</label>
+            <input 
+              formControlName="telefono"
+              class="w-full bg-neutral-800 py-2 px-4 rounded-md text-white outline-none border border-neutral-700"
+              type="tel">
+          </div>
+
+          <div>
+            <label class="block mb-2 text-sm font-medium">Educación</label>
+            <input 
+              formControlName="educacion"
+              class="w-full bg-neutral-800 py-2 px-4 rounded-md text-white outline-none border border-neutral-700"
+              type="text"
+              placeholder="Ej: Universidad Nacional del Centro del Perú">
+          </div>
+
+          <div>
+            <label class="block mb-2 text-sm font-medium">Biografía</label>
+            <textarea 
+              formControlName="biografia"
+              class="w-full bg-neutral-800 py-2 px-4 rounded-md text-white outline-none border border-neutral-700 min-h-[100px]"
+              placeholder="Cuéntanos sobre ti..."></textarea>
+          </div>
+        </ng-container>
+
+        <!-- Organización Form -->
+        <ng-container *ngIf="authService.isOrganization()">
+          <div>
+            <label class="block mb-2 text-sm font-medium">Nombre de la Organización *</label>
+            <input 
+              formControlName="nombre"
+              class="w-full bg-neutral-800 py-2 px-4 rounded-md text-white outline-none border border-neutral-700"
+              [class.border-red-500]="f['nombre'].invalid && f['nombre'].touched"
+              type="text">
+            <span *ngIf="f['nombre'].invalid && f['nombre'].touched" class="text-red-500 text-xs mt-1">
+              El nombre es requerido
+            </span>
+          </div>
+
+          <div>
+            <label class="block mb-2 text-sm font-medium">Nombre Corto</label>
+            <input 
+              formControlName="nombre_corto"
+              class="w-full bg-neutral-800 py-2 px-4 rounded-md text-white outline-none border border-neutral-700"
+              type="text">
+          </div>
+
+          <div>
+            <label class="block mb-2 text-sm font-medium">Descripción</label>
+            <textarea 
+              formControlName="descripcion"
+              class="w-full bg-neutral-800 py-2 px-4 rounded-md text-white outline-none border border-neutral-700 min-h-[100px]"
+              placeholder="Describe tu organización..."></textarea>
+          </div>
+
+          <div>
+            <label class="block mb-2 text-sm font-medium">Dirección</label>
+            <input 
+              formControlName="direccion"
+              class="w-full bg-neutral-800 py-2 px-4 rounded-md text-white outline-none border border-neutral-700"
+              type="text">
+          </div>
+
+          <div>
+            <label class="block mb-2 text-sm font-medium">Nombre de Contacto</label>
+            <input 
+              formControlName="nombre_contacto"
+              class="w-full bg-neutral-800 py-2 px-4 rounded-md text-white outline-none border border-neutral-700"
+              type="text">
+          </div>
+
+          <div>
+            <label class="block mb-2 text-sm font-medium">Teléfono de Contacto</label>
+            <input 
+              formControlName="telefono_contacto"
+              class="w-full bg-neutral-800 py-2 px-4 rounded-md text-white outline-none border border-neutral-700"
+              type="tel">
+          </div>
+
+          <div>
+            <label class="block mb-2 text-sm font-medium">Sitio Web</label>
+            <input 
+              formControlName="sitio_web"
+              class="w-full bg-neutral-800 py-2 px-4 rounded-md text-white outline-none border border-neutral-700"
+              type="url"
+              placeholder="https://ejemplo.com">
+          </div>
+        </ng-container>
+
+        <div *ngIf="errorMessage" class="rounded-md bg-red-900/50 p-3 border border-red-500">
+          <div class="text-sm text-red-200">{{ errorMessage }}</div>
+        </div>
+
+        <div *ngIf="successMessage" class="rounded-md bg-green-900/50 p-3 border border-green-500">
+          <div class="text-sm text-green-200">{{ successMessage }}</div>
+        </div>
+
+        <div class="flex gap-4 mt-6">
+          <button 
+            type="submit"
+            [disabled]="isSubmitting || profileForm.invalid"
+            class="bg-blue-500 hover:bg-blue-600 cursor-pointer rounded-md text-white font-bold px-6 py-2 disabled:opacity-50 disabled:cursor-not-allowed">
+            {{ isSubmitting ? 'Guardando...' : 'Guardar Perfil' }}
+          </button>
+          <button 
+            type="button"
+            (click)="router.navigate(['/'])"
+            class="bg-neutral-700 hover:bg-neutral-600 cursor-pointer rounded-md text-white font-bold px-6 py-2">
+            Cancelar
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+

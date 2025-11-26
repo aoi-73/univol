@@ -1,0 +1,95 @@
+<div class="min-h-screen bg-neutral-950 text-white p-8">
+  <div class="max-w-6xl mx-auto">
+    <div class="mb-6 flex items-center justify-between">
+      <div>
+        <button 
+          (click)="router.navigate(['/'])"
+          class="text-blue-400 hover:text-blue-300 mb-2 flex items-center gap-2">
+          ← Volver
+        </button>
+        <h1 class="text-3xl font-bold">Postulaciones del Evento</h1>
+        <p *ngIf="evento" class="text-neutral-400 mt-2">{{ evento.titulo }}</p>
+      </div>
+    </div>
+
+    <div *ngIf="isLoading" class="text-center py-16">
+      <p>Cargando postulaciones...</p>
+    </div>
+
+    <div *ngIf="!isLoading && errorMessage" class="rounded-md bg-red-900/50 p-4 border border-red-500 mb-6">
+      <p class="text-red-200">{{ errorMessage }}</p>
+    </div>
+
+    <div *ngIf="!isLoading && postulaciones.length === 0" class="text-center py-16">
+      <p class="text-xl mb-4 text-neutral-400">No hay postulaciones para este evento</p>
+    </div>
+
+    <div *ngIf="!isLoading && postulaciones.length > 0" class="space-y-4">
+      <div 
+        *ngFor="let post of postulaciones"
+        class="bg-neutral-900 rounded-lg p-6 border border-neutral-800">
+        <div class="flex items-start justify-between mb-4">
+          <div class="flex-1">
+            <div class="flex items-center gap-3 mb-2">
+              <h3 class="text-xl font-bold">
+                {{ post.postulante?.nombres }} {{ post.postulante?.apellidos }}
+              </h3>
+              <span 
+                [class]="'px-3 py-1 rounded-full text-sm font-medium border ' + getEstadoColor(post.estado)">
+                {{ getEstadoLabel(post.estado) }}
+              </span>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm text-neutral-400 mb-4">
+              <div>
+                <span class="font-medium text-neutral-300">Ciudad:</span> {{ post.postulante?.ciudad || 'No especificada' }}
+              </div>
+              <div *ngIf="post.postulante?.educacion">
+                <span class="font-medium text-neutral-300">Educación:</span> {{ post.postulante?.educacion }}
+              </div>
+              <div>
+                <span class="font-medium text-neutral-300">Fecha de postulación:</span> {{ formatDate(post.fecha_postulacion) }}
+              </div>
+              <div *ngIf="post.fecha_respuesta">
+                <span class="font-medium text-neutral-300">Fecha de respuesta:</span> {{ formatDate(post.fecha_respuesta) }}
+              </div>
+            </div>
+
+            <div *ngIf="post.mensaje" class="mb-4 p-4 bg-neutral-800 rounded-md">
+              <p class="text-sm text-neutral-400 mb-1">Mensaje del postulante:</p>
+              <p class="text-neutral-300">{{ post.mensaje }}</p>
+            </div>
+
+            <div *ngIf="post.nota_respuesta" class="mb-4 p-4 bg-blue-900/20 rounded-md border border-blue-500/30">
+              <p class="text-sm text-blue-400 mb-1">Nota de respuesta:</p>
+              <p class="text-blue-300">{{ post.nota_respuesta }}</p>
+            </div>
+          </div>
+        </div>
+
+        <div *ngIf="canModify(post)" class="flex gap-3 mt-4">
+          <button 
+            (click)="aceptarPostulacion(post)"
+            [disabled]="processingId === post.id"
+            class="bg-green-500 hover:bg-green-600 disabled:opacity-50 disabled:cursor-not-allowed px-6 py-2 rounded-md text-white font-bold">
+            <span *ngIf="processingId !== post.id">Aceptar</span>
+            <span *ngIf="processingId === post.id">Procesando...</span>
+          </button>
+          <button 
+            (click)="rechazarPostulacion(post)"
+            [disabled]="processingId === post.id"
+            class="bg-red-500 hover:bg-red-600 disabled:opacity-50 disabled:cursor-not-allowed px-6 py-2 rounded-md text-white font-bold">
+            <span *ngIf="processingId !== post.id">Rechazar</span>
+            <span *ngIf="processingId === post.id">Procesando...</span>
+          </button>
+        </div>
+
+        <div *ngIf="!canModify(post)" class="mt-4 text-sm text-neutral-400">
+          Esta postulación ya ha sido procesada.
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
