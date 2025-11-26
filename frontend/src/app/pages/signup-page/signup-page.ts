@@ -1,13 +1,14 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
-import { MatIcon } from "@angular/material/icon";
+import { Router, RouterLink } from '@angular/router';
+import { RolEnum, UsuarioCreate } from '../../models/user.model';
+import { AuthService } from '../../services/auth';
 
 @Component({
   selector: 'app-signup-page',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, MatIcon],
+  imports: [CommonModule, ReactiveFormsModule, RouterLink],
   templateUrl: './signup-page.html',
   styleUrls: ['./signup-page.css']
 })
@@ -15,17 +16,18 @@ export class SignupPage {
   signupForm: FormGroup;
   isSubmitting = false;
   showPassword = false;
+  errorMessage = '';
 
   constructor(
     private fb: FormBuilder,
-    private router: Router
+    private router: Router,
+    private authService: AuthService
   ) {
     this.signupForm = this.fb.group({
-      name: ['', [Validators.required, Validators.minLength(2)]],
-      surname: ['', [Validators.required, Validators.minLength(2)]],
-      email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required, Validators.minLength(6)]],
-      type: ['', Validators.required]
+      correo: ['', [Validators.required, Validators.email]],
+      contrasena: ['', [Validators.required, Validators.minLength(6)]],
+      telefono: [''],
+      rol: ['', Validators.required]
     });
   }
 
@@ -40,14 +42,26 @@ export class SignupPage {
     }
 
     this.isSubmitting = true;
+    this.errorMessage = '';
 
-    console.log('Datos del formulario:', this.signupForm.value);
+    const formValue = this.signupForm.value;
+    const userData: UsuarioCreate = {
+      correo: formValue.correo,
+      contrasena: formValue.contrasena,
+      rol: formValue.rol === 'volunteer' ? RolEnum.postulante : RolEnum.organizacion,
+      telefono: formValue.telefono || undefined
+    };
 
-    setTimeout(() => {
-      this.isSubmitting = false;
-      alert('Registro exitoso!');
-      // this.router.navigate(['/login']);
-    }, 1500);
+    this.authService.register(userData).subscribe({
+      next: () => {
+        this.isSubmitting = false;
+        this.router.navigate(['/']);
+      },
+      error: (error) => {
+        this.isSubmitting = false;
+        this.errorMessage = error.error?.detail || 'Error al registrar. Intenta nuevamente.';
+      }
+    });
   }
 
   togglePasswordVisibility() {

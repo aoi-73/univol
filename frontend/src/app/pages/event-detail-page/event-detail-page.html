@@ -1,0 +1,79 @@
+<div class="min-h-screen bg-neutral-950 text-white p-8">
+  <div class="max-w-4xl mx-auto">
+    <button 
+      (click)="router.navigate(['/'])"
+      class="mb-6 text-blue-400 hover:text-blue-300 flex items-center gap-2">
+      ← Volver
+    </button>
+
+    <div *ngIf="isLoading" class="text-center py-16">
+      <p>Cargando evento...</p>
+    </div>
+
+    <div *ngIf="!isLoading && event" class="space-y-6">
+      <div class="bg-neutral-900 rounded-lg p-6">
+        <h1 class="text-3xl font-bold mb-4">{{ event.titulo }}</h1>
+        <div class="flex items-center gap-4 text-sm text-neutral-400 mb-4">
+          <span class="px-3 py-1 bg-blue-500/20 text-blue-400 rounded-full">
+            {{ event.estado }}
+          </span>
+          <span *ngIf="event.cupo_maximo">
+            Cupo: {{ event.cupo_maximo }} participantes
+          </span>
+        </div>
+
+        <div *ngIf="event.descripcion" class="prose prose-invert max-w-none mb-6">
+          <p class="text-neutral-300 whitespace-pre-line">{{ event.descripcion }}</p>
+        </div>
+
+        <div *ngIf="event.descripcion_corta && !event.descripcion" class="mb-6">
+          <p class="text-neutral-300">{{ event.descripcion_corta }}</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+          <div class="flex items-start gap-3">
+            <span class="text-2xl">📅</span>
+            <div>
+              <p class="text-sm text-neutral-400">Fecha de Inicio</p>
+              <p class="font-medium">{{ formatDateTime(event.fecha_inicio) }}</p>
+            </div>
+          </div>
+          <div class="flex items-start gap-3">
+            <span class="text-2xl">📅</span>
+            <div>
+              <p class="text-sm text-neutral-400">Fecha de Fin</p>
+              <p class="font-medium">{{ formatDateTime(event.fecha_fin) }}</p>
+            </div>
+          </div>
+          <div class="flex items-start gap-3" *ngIf="event.ubicacion">
+            <span class="text-2xl">📍</span>
+            <div>
+              <p class="text-sm text-neutral-400">Ubicación</p>
+              <p class="font-medium">{{ event.ubicacion }}</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="mt-6 flex gap-4">
+          <button 
+            *ngIf="authService.isPostulante()"
+            (click)="applyToEvent()"
+            class="bg-blue-500 hover:bg-blue-600 px-6 py-3 rounded-md text-white font-bold">
+            Postularse a este Evento
+          </button>
+          <a 
+            *ngIf="authService.isOrganization()"
+            [routerLink]="['/eventos', event.id, 'postulaciones']"
+            class="bg-purple-500 hover:bg-purple-600 px-6 py-3 rounded-md text-white font-bold">
+            Ver Postulaciones
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="!isLoading && !event && errorMessage" class="text-center py-16">
+      <p class="text-red-400">{{ errorMessage }}</p>
+    </div>
+  </div>
+</div>
+

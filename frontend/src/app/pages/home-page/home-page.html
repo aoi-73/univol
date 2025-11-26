@@ -2,127 +2,215 @@
   <header class="border-b-[1px] border-neutral-800 px-2 py-4">
     <div class="max-w-6xl m-auto flex justify-between items-center">
       <div>
-        <span class="font-bold text-white">UniVol</span>
+        <a routerLink="/" class="font-bold text-white cursor-pointer">UniVol</a>
       </div>
 
       <div>
         <form class="border-[1px] rounded-md border-neutral-800 bg-neutral-900 py-1 px-4" action="">
-            <input class="placeholder-neutral-400 outline-none text-white" type="text" placeholder="Search">
+            <input class="placeholder-neutral-400 outline-none text-white bg-transparent" type="text" placeholder="Buscar eventos...">
         </form>
       </div>
 
       <div class="flex items-center gap-4">
-        <button class="bg-blue-500 px-4 py-1 rounded-sm text-white font-bold text-sm">Log out</button>
-        <div class="avatar">
-          <img class="w-9 h-9 rounded-full" src="https://avatars.githubusercontent.com/u/123694080?v=4" alt="" >
-        </div>
+        <ng-container *ngIf="authService.currentUserValue; else notLoggedIn">
+          <a 
+            *ngIf="authService.isPostulante()" 
+            routerLink="/mis-postulaciones"
+            class="bg-blue-500 px-4 py-1 rounded-sm text-white font-bold text-sm hover:bg-blue-600">
+            Mis Postulaciones
+          </a>
+          <button 
+            *ngIf="authService.isOrganization()" 
+            (click)="router.navigate(['/create-event'])"
+            class="bg-green-500 px-4 py-1 rounded-sm text-white font-bold text-sm hover:bg-green-600">
+            Crear Evento
+          </button>
+          <a 
+            routerLink="/perfil"
+            class="bg-gray-500 px-4 py-1 rounded-sm text-white font-bold text-sm hover:bg-gray-600">
+            Perfil
+          </a>
+          <button 
+            (click)="logout()"
+            class="bg-red-500 px-4 py-1 rounded-sm text-white font-bold text-sm hover:bg-red-600">
+            Salir
+          </button>
+        </ng-container>
+        <ng-template #notLoggedIn>
+          <a 
+            routerLink="/login"
+            class="bg-blue-500 px-4 py-1 rounded-sm text-white font-bold text-sm hover:bg-blue-600">
+            Iniciar Sesión
+          </a>
+          <a 
+            routerLink="/signup"
+            class="bg-green-500 px-4 py-1 rounded-sm text-white font-bold text-sm hover:bg-green-600">
+            Registrarse
+          </a>
+        </ng-template>
       </div>
     </div>
   </header>
 
-  <div class="flex justify-between max-w-6xl m-auto">
-      <!-- navbar -->
-      <div class="w-[250px] text-white">
-        <section class="p-4">
-          <ul>
-            <li class="flex items-center gap-2">
-              <mat-icon class="scale-70">event</mat-icon>
-              <span>Eventos</span>
-            </li>
-          </ul>
-        </section>
-        <span class="block h-[1px] bg-neutral-800"></span>
-        <section class="p-4">
-          <span>Pendientes</span>
-          <ul>
-            <li>postulaciones</li>
-            <li>postulaciones</li>
-            <li>postulaciones</li>
-            <li>postulaciones</li>
-          </ul>
-        </section>
-        <span class="block h-[1px] bg-neutral-800"></span>
-      </div>
-
+  <div class="flex justify-between max-w-6xl m-auto py-8">
       <!-- main -->
-      <div class="w-3xl ">
-        <div class="grid grid-cols-3 w-2xl py-8">
-
-          <div class="w-[200px] border-[1px] bg-neutral-900 border-neutral-800 rounded-md text-white">
-            <div>
-              <img src="https://economiasustentable.com/wp-content/uploads/2023/08/reforestacion-2.jpg" alt="">
-            </div>
-
-            <div class="p-4 flex flex-col gap-4">
-              <span class="text-lg font-bold block">Reforestacion</span>
-              <ul>
-                <li class="flex items-center">
-                  <mat-icon class="text-white scale-50">date_range</mat-icon>
-                  <span>Mon, 16 Nov 2018</span></li>
-                <li class="flex items-center">
-                  <mat-icon class="text-white scale-50">location_on</mat-icon>
-                  <span>Miami, FLorida, US</span></li>
-                <li class="flex items-center">
-                  <mat-icon class="text-white scale-50">access_time</mat-icon>
-                  <span>7:00 PM</span>
-                </li>
-              </ul>
-
-              <button class="bg-blue-500 hover:bg-blue-500/80 cursor-pointer w-full rounded-md text-white font-bold px-4 py-2">Postular</button>
-            </div>
-          </div>
-
-
-          <div class="w-[200px] border-[1px] bg-neutral-900 border-neutral-800 rounded-md text-white">
-            <div>
-              <img src="https://economiasustentable.com/wp-content/uploads/2023/08/reforestacion-2.jpg" alt="">
-            </div>
-
-            <div class="p-4 flex flex-col gap-4">
-              <span class="text-lg font-bold block">Reforestacion</span>
-              <ul>
-                <li class="flex items-center">
-                  <mat-icon class="text-white scale-50">date_range</mat-icon>
-                  <span>Mon, 16 Nov 2018</span></li>
-                <li class="flex items-center">
-                  <mat-icon class="text-white scale-50">location_on</mat-icon>
-                  <span>Miami, FLorida, US</span></li>
-                <li class="flex items-center">
-                  <mat-icon class="text-white scale-50">access_time</mat-icon>
-                  <span>7:00 PM</span>
-                </li>
-              </ul>
-
-              <button class="bg-blue-500 hover:bg-blue-500/80 cursor-pointer w-full rounded-md text-white font-bold px-4 py-2">Postular</button>
-            </div>
-          </div>
-
-
-          <div class="w-[200px] border-[1px] bg-neutral-900 border-neutral-800 rounded-md text-white">
-            <div>
-              <img src="https://economiasustentable.com/wp-content/uploads/2023/08/reforestacion-2.jpg" alt="">
-            </div>
-
-            <div class="p-4 flex flex-col gap-4">
-              <span class="text-lg font-bold block">Reforestacion</span>
-              <ul>
-                <li class="flex items-center">
-                  <mat-icon class="text-white scale-50">date_range</mat-icon>
-                  <span>Mon, 16 Nov 2018</span></li>
-                <li class="flex items-center">
-                  <mat-icon class="text-white scale-50">location_on</mat-icon>
-                  <span>Miami, FLorida, US</span></li>
-                <li class="flex items-center">
-                  <mat-icon class="text-white scale-50">access_time</mat-icon>
-                  <span>7:00 PM</span>
-                </li>
-              </ul>
-
-              <button class="bg-blue-500 hover:bg-blue-500/80 cursor-pointer w-full rounded-md text-white font-bold px-4 py-2">Postular</button>
-            </div>
-          </div>
-
+      <div class="w-full">
+        <div *ngIf="isLoading" class="text-white text-center py-8">
+          <p>Cargando eventos...</p>
         </div>
+        
+        <!-- Vista para Organizaciones: Dos secciones separadas -->
+        <ng-container *ngIf="!isLoading && authService.isOrganization()">
+          <!-- Sección: Mis Eventos -->
+          <div class="mb-12">
+            <h2 class="text-2xl font-bold text-white mb-6">Mis Eventos</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" *ngIf="myEvents.length > 0; else noMyEvents">
+              <div 
+                *ngFor="let event of myEvents"
+                class="border-[1px] bg-neutral-900 border-neutral-800 rounded-lg text-white hover:shadow-lg transition-shadow cursor-pointer"
+                (click)="router.navigate(['/eventos', event.id])">
+                <div>
+                  <img 
+                    [src]="event.imagen_url ? 'http://localhost:8000' + event.imagen_url : 'https://images.unsplash.com/photo-1469571486292-0ba58a3f068b?w=400&h=200&fit=crop'" 
+                    [alt]="event.titulo"
+                    class="w-full h-48 object-cover rounded-t-lg">
+                </div>
+
+                <div class="p-4 flex flex-col gap-3">
+                  <h3 class="text-lg font-bold block line-clamp-2">{{ event.titulo }}</h3>
+                  <p class="text-sm text-neutral-400 line-clamp-2">{{ event.descripcion_corta || event.descripcion }}</p>
+                  <ul class="space-y-2 text-sm">
+                    <li class="flex items-center gap-2">
+                      <span>📅</span>
+                      <span>{{ formatDateTime(event.fecha_inicio) }}</span>
+                    </li>
+                    <li class="flex items-center gap-2" *ngIf="event.ubicacion">
+                      <span>📍</span>
+                      <span>{{ event.ubicacion }}</span>
+                    </li>
+                    <li class="flex items-center gap-2" *ngIf="event.cupo_maximo">
+                      <span>👥</span>
+                      <span>Cupo: {{ event.cupo_maximo }}</span>
+                    </li>
+                  </ul>
+
+                  <div class="mt-2 space-y-2">
+                    <span class="text-sm text-neutral-400 block text-center">
+                      {{ event.estado }}
+                    </span>
+                    <a 
+                      [routerLink]="['/eventos', event.id, 'postulaciones']"
+                      (click)="$event.stopPropagation()"
+                      class="bg-purple-500 hover:bg-purple-600 cursor-pointer w-full rounded-md text-white font-bold px-4 py-2 block text-center">
+                      Ver Postulaciones
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <ng-template #noMyEvents>
+              <div class="text-white text-center py-8 border-[1px] border-neutral-800 rounded-lg bg-neutral-900">
+                <p class="text-lg mb-4">No tienes eventos creados</p>
+                <button 
+                  (click)="router.navigate(['/create-event'])"
+                  class="mt-4 bg-blue-500 hover:bg-blue-600 px-6 py-3 rounded-md text-white font-bold">
+                  Crear Primer Evento
+                </button>
+              </div>
+            </ng-template>
+          </div>
+
+          <!-- Sección: Otros Eventos -->
+          <div>
+            <h2 class="text-2xl font-bold text-white mb-6">Otros Eventos</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" *ngIf="otherEvents.length > 0; else noOtherEvents">
+              <div 
+                *ngFor="let event of otherEvents"
+                class="border-[1px] bg-neutral-900 border-neutral-800 rounded-lg text-white hover:shadow-lg transition-shadow cursor-pointer"
+                (click)="router.navigate(['/eventos', event.id])">
+                <div>
+                  <img 
+                    [src]="event.imagen_url ? 'http://localhost:8000' + event.imagen_url : 'https://images.unsplash.com/photo-1469571486292-0ba58a3f068b?w=400&h=200&fit=crop'" 
+                    [alt]="event.titulo"
+                    class="w-full h-48 object-cover rounded-t-lg">
+                </div>
+
+                <div class="p-4 flex flex-col gap-3">
+                  <h3 class="text-lg font-bold block line-clamp-2">{{ event.titulo }}</h3>
+                  <p class="text-sm text-neutral-400 line-clamp-2">{{ event.descripcion_corta || event.descripcion }}</p>
+                  <ul class="space-y-2 text-sm">
+                    <li class="flex items-center gap-2">
+                      <span>📅</span>
+                      <span>{{ formatDateTime(event.fecha_inicio) }}</span>
+                    </li>
+                    <li class="flex items-center gap-2" *ngIf="event.ubicacion">
+                      <span>📍</span>
+                      <span>{{ event.ubicacion }}</span>
+                    </li>
+                    <li class="flex items-center gap-2" *ngIf="event.cupo_maximo">
+                      <span>👥</span>
+                      <span>Cupo: {{ event.cupo_maximo }}</span>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            <ng-template #noOtherEvents>
+              <div class="text-white text-center py-8 border-[1px] border-neutral-800 rounded-lg bg-neutral-900">
+                <p class="text-lg">No hay eventos de otras organizaciones disponibles</p>
+              </div>
+            </ng-template>
+          </div>
+        </ng-container>
+
+        <!-- Vista para Postulantes y usuarios no autenticados: Todos los eventos juntos -->
+        <ng-container *ngIf="!isLoading && !authService.isOrganization()">
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" *ngIf="events.length > 0; else noEvents">
+            <div 
+              *ngFor="let event of events"
+              class="border-[1px] bg-neutral-900 border-neutral-800 rounded-lg text-white hover:shadow-lg transition-shadow cursor-pointer"
+              (click)="router.navigate(['/eventos', event.id])">
+              <div>
+                <img 
+                  [src]="event.imagen_url ? 'http://localhost:8000' + event.imagen_url : 'https://images.unsplash.com/photo-1469571486292-0ba58a3f068b?w=400&h=200&fit=crop'" 
+                  [alt]="event.titulo"
+                  class="w-full h-48 object-cover rounded-t-lg">
+              </div>
+
+              <div class="p-4 flex flex-col gap-3">
+                <h3 class="text-lg font-bold block line-clamp-2">{{ event.titulo }}</h3>
+                <p class="text-sm text-neutral-400 line-clamp-2">{{ event.descripcion_corta || event.descripcion }}</p>
+                <ul class="space-y-2 text-sm">
+                  <li class="flex items-center gap-2">
+                    <span>📅</span>
+                    <span>{{ formatDateTime(event.fecha_inicio) }}</span>
+                  </li>
+                  <li class="flex items-center gap-2" *ngIf="event.ubicacion">
+                    <span>📍</span>
+                    <span>{{ event.ubicacion }}</span>
+                  </li>
+                  <li class="flex items-center gap-2" *ngIf="event.cupo_maximo">
+                    <span>👥</span>
+                    <span>Cupo: {{ event.cupo_maximo }}</span>
+                  </li>
+                </ul>
+
+                <button 
+                  *ngIf="authService.isPostulante()"
+                  (click)="applyToEvent(event.id); $event.stopPropagation()"
+                  class="bg-blue-500 hover:bg-blue-600 cursor-pointer w-full rounded-md text-white font-bold px-4 py-2 mt-2">
+                  Postularse
+                </button>
+              </div>
+            </div>
+          </div>
+          
+          <ng-template #noEvents>
+            <div class="text-white text-center py-16">
+              <p class="text-xl mb-4">No hay eventos disponibles</p>
+            </div>
+          </ng-template>
+        </ng-container>
       </div>
   </div>
 </main>

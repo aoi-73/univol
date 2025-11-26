@@ -1,0 +1,79 @@
+<div class="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+  <div class="max-w-md w-full space-y-8">
+    <div>
+      <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900">
+        Iniciar Sesión
+      </h2>
+      <p class="mt-2 text-center text-sm text-gray-600">
+        O
+        <a routerLink="/signup" class="font-medium text-indigo-600 hover:text-indigo-500">
+          crea una cuenta nueva
+        </a>
+      </p>
+    </div>
+    <form class="mt-8 space-y-6" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+      <div class="rounded-md shadow-sm -space-y-px">
+        <div>
+          <label for="correo" class="sr-only">Correo electrónico</label>
+          <input
+            id="correo"
+            name="correo"
+            type="email"
+            autocomplete="email"
+            required
+            formControlName="correo"
+            class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+            placeholder="Correo electrónico"
+            [class.border-red-500]="f['correo'].invalid && f['correo'].touched"
+          />
+          <div *ngIf="f['correo'].invalid && f['correo'].touched" class="text-red-500 text-xs mt-1">
+            <div *ngIf="f['correo'].errors?.['required']">El correo es requerido</div>
+            <div *ngIf="f['correo'].errors?.['email']">Correo inválido</div>
+          </div>
+        </div>
+        <div class="relative">
+          <label for="contrasena" class="sr-only">Contraseña</label>
+          <input
+            id="contrasena"
+            name="contrasena"
+            [type]="showPassword ? 'text' : 'password'"
+            autocomplete="current-password"
+            required
+            formControlName="contrasena"
+            class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+            placeholder="Contraseña"
+            [class.border-red-500]="f['contrasena'].invalid && f['contrasena'].touched"
+          />
+          <button
+            type="button"
+            (click)="togglePasswordVisibility()"
+            class="absolute inset-y-0 right-0 pr-3 flex items-center text-sm leading-5"
+          >
+            <span class="text-gray-500">{{ showPassword ? 'Ocultar' : 'Mostrar' }}</span>
+          </button>
+          <div *ngIf="f['contrasena'].invalid && f['contrasena'].touched" class="text-red-500 text-xs mt-1">
+            <div *ngIf="f['contrasena'].errors?.['required']">La contraseña es requerida</div>
+            <div *ngIf="f['contrasena'].errors?.['minlength']">Mínimo 6 caracteres</div>
+          </div>
+        </div>
+      </div>
+
+      <div *ngIf="errorMessage" class="rounded-md bg-red-50 p-4">
+        <div class="text-sm text-red-800">{{ errorMessage }}</div>
+      </div>
+
+      <div>
+        <button
+          type="submit"
+          [disabled]="isSubmitting || loginForm.invalid"
+          class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed"
+        >
+          <span *ngIf="!isSubmitting">Iniciar Sesión</span>
+          <span *ngIf="isSubmitting">Iniciando sesión...</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+
