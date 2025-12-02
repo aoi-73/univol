@@ -28,3 +28,4 @@ class PostulacionUpdate(BaseModel):
     estado: EstadoPostulacionEnum
     nota_respuesta: Optional[str] = None
 
+

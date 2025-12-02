@@ -15,3 +15,4 @@ UPLOAD_DIR.mkdir(exist_ok=True)
 AVATAR_DIR.mkdir(exist_ok=True)
 EVENT_IMAGE_DIR.mkdir(exist_ok=True)
 
+

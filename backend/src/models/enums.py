@@ -17,3 +17,4 @@ class EstadoPostulacionEnum(str, enum.Enum):
     rechazado = "rechazado"
     cancelado = "cancelado"
 
+

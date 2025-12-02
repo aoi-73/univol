@@ -18,3 +18,4 @@ class Postulacion(Base):
     evento = relationship("Evento", back_populates="postulaciones")
     postulante = relationship("Postulante", back_populates="postulaciones")
 
+

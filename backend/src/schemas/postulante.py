@@ -20,3 +20,4 @@ class PostulanteResponse(BaseModel):
     class Config:
         from_attributes = True
 
+

@@ -16,11 +16,12 @@ class Evento(Base):
     ubicacion = Column(String(500))
     imagen_url = Column(String(500), nullable=True)
     cupo_maximo = Column(Integer, nullable=True)
-    estado = Column(SQLEnum(EstadoEventoEnum), default=EstadoEventoEnum.borrador)
+    estado = Column(SQLEnum(EstadoEventoEnum), default=EstadoEventoEnum.publicado)
     fecha_publicacion = Column(TIMESTAMP, nullable=True)
     fecha_creacion = Column(TIMESTAMP, default=datetime.utcnow)
     fecha_actualizacion = Column(TIMESTAMP, default=datetime.utcnow, onupdate=datetime.utcnow)
     
     organizacion = relationship("Organizacion", back_populates="eventos")
     postulaciones = relationship("Postulacion", back_populates="evento", cascade="all, delete-orphan")
+
 

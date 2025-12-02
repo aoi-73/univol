@@ -21,3 +21,4 @@ class Organizacion(Base):
     usuario = relationship("Usuario", back_populates="organizacion")
     eventos = relationship("Evento", back_populates="organizacion", cascade="all, delete-orphan")
 
+

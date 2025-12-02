@@ -20,3 +20,4 @@ class Usuario(Base):
     organizacion = relationship("Organizacion", back_populates="usuario", uselist=False, cascade="all, delete-orphan")
     postulante = relationship("Postulante", back_populates="usuario", uselist=False, cascade="all, delete-orphan")
 
+
